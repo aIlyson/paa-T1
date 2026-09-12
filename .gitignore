@@ -1,0 +1,8 @@
+# Executáveis e arquivos objeto
+*.exe
+*.o
+*.obj
+*.out
+bin/
+build/
+.vscode/
