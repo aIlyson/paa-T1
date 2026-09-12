@@ -26,4 +26,4 @@ Desenvolvido por:
 
 ## 📄 Licença
 
-Este projeto é de cunho exclusivamente acadêmico para avaliação na disciplina de **Projeto e Análise de Algoritmos** - **UFPI**.
+Este projeto está sob a licença [MIT](LICENSE).
