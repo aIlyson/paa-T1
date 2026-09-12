@@ -15,6 +15,31 @@ O trabalho tem como objetivo a implementação na linguagem **C**, análise teó
 
 ---
 
+## 🚀 Como Compilar e Executar
+
+### 1. Compilação (GCC)
+
+Execute o comando abaixo na raiz do projeto para compilar os módulos com as flags de verificação:
+
+```bash
+gcc -Wall -Wextra -std=c99 -Iinclude main.c src/*.c -lm -o trabalho.exe
+```
+
+### 2. Execução
+
+- **Windows (PowerShell / CMD):**
+
+  ```powershell
+  .\trabalho.exe
+  ```
+- **Linux / macOS:**
+
+  ```bash
+  ./trabalho.exe
+  ```
+
+---
+
 ## 👥 Autores
 
 Desenvolvido por:

@@ -1,6 +1,8 @@
-#include <stdio.h>
+#include "include/menu.h"
 
-int main(void) {
-    printf("OK\n");
+int main()
+{
+    menu_principal();
+    
     return 0;
 }
