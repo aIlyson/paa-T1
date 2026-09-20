@@ -1,6 +1,6 @@
 #include "../include/measure_time.h"
 #include "../include/tree_sort.h"
-#include "../include/utilS.h"
+#include "../include/utils.h"
 #include "../include/security.h"
 #include <stdio.h>
 #include <stdlib.h>
