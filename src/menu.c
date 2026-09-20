@@ -2,6 +2,8 @@
 #include "../include/security.h"
 #include "../include/tree_sort.h"
 #include "../include/block_sort.h"
+#include "../include/utils.h"
+#include "../include/measure_time.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,6 +24,30 @@ void print_menu()
 void print_titulo_menu()
 {
     printf("Digite sua opcao: ");
+}
+
+/* Imprime, recursivamente, os elementos do vetor separados por espaco. */
+void imprimir_vetor(const int *vetor, int indice, int tamanho) {
+    if (indice < tamanho) {
+        printf("%d ", vetor[indice]);
+        imprimir_vetor(vetor, indice + 1, tamanho);
+    }
+}
+
+void demonstracao_treesort(void) {
+    int vetor[] = {50, 10, 40, 20, 30, 5, 25};
+    int tamanho = 7;
+
+    printf("\n-- Treesort --\n");
+    printf("Vetor original:  ");
+    imprimir_vetor(vetor, 0, tamanho);
+    printf("\n");
+
+    tree_sort(vetor, tamanho);
+
+    printf("Vetor ordenado:  ");
+    imprimir_vetor(vetor, 0, tamanho);
+    printf("\n");
 }
 
 void menu_principal()
@@ -46,7 +72,7 @@ void menu_principal()
         {
         case 1:
             print_titulo("DEMONSTRACAO COM VETOR PEQUENO");
-            tree_sort(NULL, 0);
+            demonstracao_treesort();
             block_sort(NULL, 0);
             mensagem_sucesso("Demonstracao finalizada!");
             pausar_tela();
@@ -54,7 +80,8 @@ void menu_principal()
 
         case 2:
             print_titulo("TESTES DE DESEMPENHO");
-            mensagem_info("Modulo de medicao pronto para execucao.");
+            mensagem_info("Rodando os 9 casos de teste do Treesort (3 tamanhos x 3 tipos)...");
+            medir_tempos_treesort();
             pausar_tela();
             break;
 
