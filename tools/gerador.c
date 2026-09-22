@@ -48,16 +48,16 @@ void gerar_um_tamanho(int n) {
     char caminho[256];
 
     preencher_crescente(v, 0, n);
-    snprintf(caminho, sizeof(caminho), "../dados/dados_%d_crescente.txt", n);
+    snprintf(caminho, sizeof(caminho), "experimentos/dados/dados_%d_crescente.txt", n);
     salvar_arquivo(caminho, v, n);
 
     preencher_decrescente(v, 0, n);
-    snprintf(caminho, sizeof(caminho), "../dados/dados_%d_decrescente.txt", n);
+    snprintf(caminho, sizeof(caminho), "experimentos/dados/dados_%d_decrescente.txt", n);
     salvar_arquivo(caminho, v, n);
 
     srand(SEED_ALEATORIOS + (unsigned) n);
     preencher_aleatorio(v, 0, n);
-    snprintf(caminho, sizeof(caminho), "../dados/dados_%d_aleatorio.txt", n);
+    snprintf(caminho, sizeof(caminho), "experimentos/dados/dados_%d_aleatorio.txt", n);
     salvar_arquivo(caminho, v, n);
 
     free(v);
@@ -75,7 +75,7 @@ int main(void) {
 
     gerar_todos(tamanhos, 0, 3);
 
-    printf("\nTodos os arquivos de teste foram gerados em ../dados/\n");
+    printf("\nTodos os arquivos de teste foram gerados em experimentos/dados/\n");
     printf("Os DOIS algoritmos (Treesort e Block Sort) devem usar esses MESMOS arquivos.\n");
     return 0;
 }
