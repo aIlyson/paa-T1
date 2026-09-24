@@ -1,19 +1,7 @@
 algoritmo,tamanho,tipo,tempo_segundos
-Tree Sort,20000,crescente,0.473093
-Block Sort,20000,crescente,0.000037
-Tree Sort,20000,decrescente,0.532907
-Block Sort,20000,decrescente,0.000723
-Tree Sort,20000,aleatorio,0.003184
-Block Sort,20000,aleatorio,0.002427
-Tree Sort,60000,crescente,5.842886
-Block Sort,60000,crescente,0.000119
-Tree Sort,60000,decrescente,6.644499
-Block Sort,60000,decrescente,0.002754
-Tree Sort,60000,aleatorio,0.012922
-Block Sort,60000,aleatorio,0.008504
-Tree Sort,80000,crescente,11.043121
-Block Sort,80000,crescente,0.000278
-Tree Sort,80000,decrescente,13.686421
-Block Sort,80000,decrescente,0.004013
-Tree Sort,80000,aleatorio,0.018775
-Block Sort,80000,aleatorio,0.013480
+Tree Sort,20000,crescente,0.798447
+Block Sort,20000,crescente,0.000120
+Tree Sort,20000,decrescente,1.002148
+Block Sort,20000,decrescente,0.003385
+Tree Sort,20000,aleatorio,0.010115
+Block Sort,20000,aleatorio,0.005249

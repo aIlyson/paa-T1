@@ -1,4 +1,5 @@
 #include "../include/block_sort.h"
+#include "../include/security.h"
 #include <stdio.h>
 
 #define TAMANHO_BLOCO_BASE 16
@@ -11,6 +12,29 @@ static void imprimir_intervalo(const int *array, int left, int right)
     int i;
     for (i = left; i <= right; i++)
         printf("%d ", array[i]);
+}
+
+static void imprimir_blocos(const int *array, int tamanho, int tamanho_bloco)
+{
+    int i, j, fim;
+
+    printf("  blocos: ");
+    for (i = 0; i < tamanho; i += tamanho_bloco)
+    {
+        fim = i + tamanho_bloco - 1;
+        if (fim > tamanho - 1)
+            fim = tamanho - 1;
+        print_amarelo("[");
+        for (j = i; j <= fim; j++)
+        {
+            printf("%d", array[j]);
+            if (j < fim)
+                printf(" ");
+        }
+        print_amarelo("]");
+        printf(" ");
+    }
+    printf("\n");
 }
 
 static void swap(int *a, int *b)
@@ -37,11 +61,17 @@ static void rotate(int array[], int left, int middle, int right)
 
     if (rastrear)
     {
-        printf("      rotate: blocos [%d..%d] + [%d..%d] em [%d..%d]\n",
-               left, middle, middle + 1, right, left, right);
-        printf("        antes : ");
-        imprimir_intervalo(array, left, right);
-        printf("\n");
+        int i;
+        printf("      rotate [%d..%d]: ", left, right);
+        cor_vermelha();
+        for (i = left; i <= right; i++)
+        {
+            if (i == middle + 1)
+                printf("| ");
+            printf("%d ", array[i]);
+        }
+        cor_normal();
+        printf(" -> ");
     }
 
     reverse(array, left, middle);
@@ -50,9 +80,18 @@ static void rotate(int array[], int left, int middle, int right)
 
     if (rastrear)
     {
-        printf("        depois: ");
-        imprimir_intervalo(array, left, right);
+        int i;
+        int corte = left + (right - middle) - 1;
+        cor_verde();
+        for (i = left; i <= right; i++)
+        {
+            if (i == corte + 1)
+                printf("| ");
+            printf("%d ", array[i]);
+        }
+        cor_normal();
         printf("\n");
+        pausa_passo();
     }
 }
 
@@ -72,7 +111,12 @@ static int lower_bound(const int array[], int left, int right, int value)
     }
 
     if (rastrear)
+    {
+        cor_amarela();
         printf("      lower_bound(%d) em [%d..%d) -> %d\n", value, inicio, fim, left);
+        cor_normal();
+        pausa_passo();
+    }
 
     return left;
 }
@@ -93,7 +137,12 @@ static int upper_bound(const int array[], int left, int right, int value)
     }
 
     if (rastrear)
+    {
+        cor_amarela();
         printf("      upper_bound(%d) em [%d..%d) -> %d\n", value, inicio, fim, left);
+        cor_normal();
+        pausa_passo();
+    }
 
     return left;
 }
@@ -104,9 +153,11 @@ static void insertion_sort(int array[], int left, int right)
 
     if (rastrear)
     {
-        printf("    insertion_sort [%d..%d] antes : ", left, right);
+        printf("    bloco [%d..%d]: ", left, right);
+        cor_vermelha();
         imprimir_intervalo(array, left, right);
-        printf("\n");
+        cor_normal();
+        printf(" -> ");
     }
 
     for (i = left + 1; i <= right; i++)
@@ -115,9 +166,11 @@ static void insertion_sort(int array[], int left, int right)
 
     if (rastrear)
     {
-        printf("                     depois: ");
+        cor_verde();
         imprimir_intervalo(array, left, right);
+        cor_normal();
         printf("\n");
+        pausa_passo();
     }
 }
 
@@ -129,13 +182,23 @@ static void merge_in_place(int array[], int left, int mid, int right)
         return;
 
     if (rastrear)
-        printf("    merge [%d..%d] com lados [%d..%d] e [%d..%d]\n",
+    {
+        cor_azul();
+        printf("    merge [%d..%d]: lados [%d..%d] e [%d..%d]\n",
                left, right, left, mid, mid + 1, right);
+        cor_normal();
+        pausa_passo();
+    }
 
     if (array[mid] <= array[mid + 1])
     {
         if (rastrear)
+        {
+            cor_azul();
             printf("      lados ja intercalados, nada a fazer\n");
+            cor_normal();
+            pausa_passo();
+        }
         return;
     }
 
@@ -177,8 +240,13 @@ static void block_sort_com_bloco(int *vetor, int tamanho, int tamanho_bloco)
         tamanho_bloco = 1;
 
     if (rastrear)
-        printf("\n[Fase 1] Blocos de %d elemento(s) ordenados com insertion sort:\n",
+    {
+        cor_azul();
+        printf("\n[Fase 1] Ordenando blocos de %d elemento(s) com insertion sort\n",
                tamanho_bloco);
+        cor_normal();
+        pausa_fase();
+    }
 
     for (inicio = 0; inicio < tamanho; inicio += tamanho_bloco)
     {
@@ -189,10 +257,23 @@ static void block_sort_com_bloco(int *vetor, int tamanho, int tamanho_bloco)
     }
 
     if (rastrear)
-        printf("\n[Fase 2] Merges progressivos (bottom-up) in-place:\n");
+    {
+        imprimir_blocos(vetor, tamanho, tamanho_bloco);
+        pausa_fase();
+        cor_azul();
+        printf("\n[Fase 2] Merges progressivos (bottom-up) in-place\n");
+        cor_normal();
+        pausa_fase();
+    }
 
     for (largura = tamanho_bloco; largura < tamanho; )
     {
+        if (rastrear)
+        {
+            cor_azul();
+            printf("\n  largura %d:\n", largura);
+            cor_normal();
+        }
         for (esq = 0; esq < tamanho; esq += 2 * largura)
         {
             meio = esq + largura - 1;
@@ -202,6 +283,15 @@ static void block_sort_com_bloco(int *vetor, int tamanho, int tamanho_bloco)
             if (dir > tamanho - 1)
                 dir = tamanho - 1;
             merge_in_place(vetor, esq, meio, dir);
+        }
+        if (rastrear)
+        {
+            printf("  vetor: ");
+            cor_amarela();
+            imprimir_intervalo(vetor, 0, tamanho - 1);
+            cor_normal();
+            printf("\n");
+            pausa_fase();
         }
         if (largura > tamanho / 2)
             break;
@@ -219,9 +309,11 @@ void block_sort_passo_a_passo(int *vetor, int tamanho)
     if (vetor == NULL || tamanho <= 0)
         return;
 
-    printf("\n-- Block Sort: demonstracao passo a passo --\n");
+    print_azul("-- Block Sort: passo a passo --\n");
     printf("Vetor original:  ");
+    cor_amarela();
     imprimir_intervalo(vetor, 0, tamanho - 1);
+    cor_normal();
     printf("\n");
 
     rastrear = 1;
@@ -229,6 +321,8 @@ void block_sort_passo_a_passo(int *vetor, int tamanho)
     rastrear = 0;
 
     printf("\nVetor ordenado:  ");
+    cor_verde();
     imprimir_intervalo(vetor, 0, tamanho - 1);
+    cor_normal();
     printf("\n");
 }

@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct No {
+typedef struct No
+{
     int valor;
     struct No *esq;
     struct No *dir;
@@ -11,8 +12,9 @@ typedef struct No {
 
 static No *criar_no(int valor)
 {
-    No *novo = (No *) malloc(sizeof(No));
+    No *novo = (No *)malloc(sizeof(No));
     verificar_alocacao(novo);
+
     novo->valor = valor;
     novo->esq = NULL;
     novo->dir = NULL;
@@ -139,7 +141,7 @@ static No **criar_pilha(int capacidade)
 {
     No **pilha;
 
-    pilha = (No **) malloc(sizeof(No *) * (size_t) capacidade);
+    pilha = (No **)malloc(sizeof(No *) * (size_t)capacidade);
     verificar_alocacao(pilha);
     return pilha;
 }
@@ -169,28 +171,52 @@ void tree_sort_passo_a_passo(int *vetor, int tamanho)
     if (vetor == NULL || tamanho <= 0)
         return;
 
-    printf("\n-- Tree Sort: demonstracao passo a passo --\n");
+    print_azul("-- Tree Sort: passo a passo --\n");
     printf("Vetor original:  ");
+    cor_amarela();
     for (i = 0; i < tamanho; i++)
         printf("%d ", vetor[i]);
+    cor_normal();
     printf("\n");
 
     pilha = criar_pilha(tamanho);
 
-    printf("\nInserindo na BST (iterativo):\n");
+    cor_azul();
+    printf("\n[Fase 1] Inserindo cada valor na BST (iterativo)\n");
+    cor_normal();
+    pausa_fase();
+
     for (i = 0; i < tamanho; i++)
     {
         inserir_no(&raiz, vetor[i]);
-        printf("  [%d] inserido %-3d -> em-ordem parcial: ", i + 1, vetor[i]);
+        printf("  [");
+        cor_azul();
+        printf("%d", i + 1);
+        cor_normal();
+        printf("] insere ");
+        cor_verde();
+        printf("%-3d", vetor[i]);
+        cor_normal();
+        printf(" -> em-ordem: ");
+        cor_amarela();
         em_ordem_imprimir(raiz, pilha);
+        cor_normal();
         printf("\n");
+        pausa_passo();
     }
+
+    cor_azul();
+    printf("\n[Fase 2] Travessia em-ordem (grava ordenado no vetor)\n");
+    cor_normal();
+    pausa_fase();
 
     em_ordem(raiz, vetor, &indice, pilha);
 
     printf("\nVetor ordenado:  ");
+    cor_verde();
     for (i = 0; i < tamanho; i++)
         printf("%d ", vetor[i]);
+    cor_normal();
     printf("\n");
 
     liberar_arvore(raiz, pilha);

@@ -5,11 +5,33 @@
 #include "../include/measure_time.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #endif
+
+#define TAMANHO_DEMO 7
+
+static int vetor_demo[TAMANHO_DEMO];
+
+static void gerar_vetor_demo(void)
+{
+    int i, j, repetido;
+
+    for (i = 0; i < TAMANHO_DEMO; i++)
+    {
+        do
+        {
+            vetor_demo[i] = 1 + rand() % 99;
+            repetido = 0;
+            for (j = 0; j < i; j++)
+                if (vetor_demo[j] == vetor_demo[i])
+                    repetido = 1;
+        } while (repetido);
+    }
+}
 
 static void print_menu(void)
 {
@@ -20,31 +42,37 @@ static void print_menu(void)
     printf("==========================================\n");
     printf("1 - Demonstracao do Tree Sort (passo a passo)\n");
     printf("2 - Demonstracao do Block Sort (passo a passo)\n");
-    printf("3 - Executar Medicao de Desempenho (Tree x Block)\n");
-    printf("4 - Informacoes Teoricas e Ambiente de Execucao\n");
+    printf("3 - Executar medicao de desempenho (Tree x Block)\n");
+    printf("4 - Informacoes teoricas e de Ambiente\n");
     printf("0 - Sair\n");
     printf("==========================================\n");
 }
 
 static void print_titulo_menu(void)
 {
-    printf("Digite sua opcao: ");
+    print_amarelo("Digite sua opcao: ");
 }
 
 static void demonstracao_tree_sort(void)
 {
-    int vetor[] = {50, 10, 40, 20, 30, 5, 25};
-    int tamanho = 7;
+    int vetor[TAMANHO_DEMO];
+    int i;
 
-    tree_sort_passo_a_passo(vetor, tamanho);
+    for (i = 0; i < TAMANHO_DEMO; i++)
+        vetor[i] = vetor_demo[i];
+
+    tree_sort_passo_a_passo(vetor, TAMANHO_DEMO);
 }
 
 static void demonstracao_block_sort(void)
 {
-    int vetor[] = {50, 10, 40, 20, 30, 5, 25};
-    int tamanho = 7;
+    int vetor[TAMANHO_DEMO];
+    int i;
 
-    block_sort_passo_a_passo(vetor, tamanho);
+    for (i = 0; i < TAMANHO_DEMO; i++)
+        vetor[i] = vetor_demo[i];
+
+    block_sort_passo_a_passo(vetor, TAMANHO_DEMO);
 }
 
 static void exibir_ambiente(void)
@@ -101,7 +129,7 @@ static void exibir_informacoes(void)
     printf("\n[2] Block Sort / Block Merge Sort (Grupo B)\n");
     printf("    Paradigma: subdivisao em blocos + intercalacao in-place estavel\n");
     printf("               (busca binaria lower/upper_bound + rotacao por triplo reverse)\n");
-    printf("    Melhor caso : O(n) (dados ja ordenados: merges retornam de imediato)\n");
+    printf("    Melhor caso : O(n log n) (otimizacao de caminho feliz nos merges)\n");
     printf("    Caso medio  : O(n log^2 n) (merge in-place por rotacoes)\n");
     printf("    Pior caso   : O(n log^2 n)\n");
     printf("    Nota: variantes avancadas com intercambio de blocos (ex.: WikiSort)\n");
@@ -115,6 +143,9 @@ static void exibir_informacoes(void)
 void menu_principal(void)
 {
     int opcao = -1;
+
+    srand((unsigned) time(NULL));
+    gerar_vetor_demo();
 
     do
     {
@@ -136,19 +167,22 @@ void menu_principal(void)
         }
         limpar_buffer();
 
+        if (opcao >= 1 && opcao <= 4)
+            limpar_tela();
+
         switch (opcao)
         {
         case 1:
             print_titulo("DEMONSTRACAO - TREE SORT");
             demonstracao_tree_sort();
-            mensagem_sucesso("Demonstracao finalizada!");
+            mensagem_sucesso("Algoritmo ordenado!");
             pausar_tela();
             break;
 
         case 2:
             print_titulo("DEMONSTRACAO - BLOCK SORT");
             demonstracao_block_sort();
-            mensagem_sucesso("Demonstracao finalizada!");
+            mensagem_sucesso("Algoritmo ordenado!");
             pausar_tela();
             break;
 
